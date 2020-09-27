@@ -11,7 +11,9 @@ var RealTimeMonitor = /** @class */ (function () {
         var date = new Date();
         date.setSeconds(date.getSeconds() - points);
         for (var i = 0; i < points; i++) {
-            date.setSeconds(i);
+            var seconds = date.getSeconds();
+            console.log(seconds);
+            date.setSeconds(date.getSeconds() + 1);
             var timeStamp = date.getTime();
             var value = Math.floor(Math.random() * 80) + 100;
             this.metrics.push({ value: value, date: timeStamp });
