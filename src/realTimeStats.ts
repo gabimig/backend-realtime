@@ -1,5 +1,5 @@
 class RealTimeMonitor {
-    metrics: {value: number, date: Date}[]
+    metrics: {value: number, date: number}[]
     maxpoints: number
     timeout: NodeJS.Timeout | null
     eventHandler: (() => void )| null
@@ -15,10 +15,12 @@ class RealTimeMonitor {
         date.setSeconds(date.getSeconds() - points)
 
         for(let i = 0; i < points; i++) {
+            date.setSeconds( i)
+            const timeStamp = date.getTime()
             const value = Math.floor(Math.random() * 80) + 100
-            date.setSeconds(date.getSeconds() + i)
-            this.metrics.push({value, date})
+            this.metrics.push({value, date: timeStamp})
         }
+        console.log('init finish')
     }
 
     initRealtimeGeneration() {
@@ -26,10 +28,11 @@ class RealTimeMonitor {
         this.timeout = setTimeout(() => {
             const value = Math.floor(Math.random() * 80) + 100
             const date = new Date()
+            const timeStamp = date.getTime()
             if (this.metrics.length == this.maxpoints) {
                 this.metrics = this.metrics.slice(1, this.metrics.length)
             }
-            this.metrics.push({value, date})
+            this.metrics.push({value, date: timeStamp})
             if (this.eventHandler) {
                 this.eventHandler()
             }
